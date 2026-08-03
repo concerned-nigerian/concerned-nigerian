@@ -15,8 +15,6 @@ export default function AuthPage() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
-  const supabase = getSupabase()
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
@@ -24,6 +22,13 @@ export default function AuthPage() {
     setLoading(true)
 
     try {
+      const supabase = getSupabase()
+      if (!supabase) {
+        throw new Error(
+          'Auth is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel Environment Variables.'
+        )
+      }
+
       if (mode === 'login') {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -59,6 +64,13 @@ export default function AuthPage() {
 
   const handleGoogleLogin = async () => {
     setError(null)
+    const supabase = getSupabase()
+    if (!supabase) {
+      setError(
+        'Auth is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel Environment Variables.'
+      )
+      return
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/` },

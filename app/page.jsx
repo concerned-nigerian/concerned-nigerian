@@ -708,6 +708,7 @@ export default function App() {
 
   useEffect(() => {
     const supabase = getSupabase();
+    if (!supabase) return;
     supabase.auth.getUser().then(({ data }) => setUser(data?.user ?? null));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
@@ -717,7 +718,7 @@ export default function App() {
 
   const handleLogout = async () => {
     const supabase = getSupabase();
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut();
     setUser(null);
   };
 
