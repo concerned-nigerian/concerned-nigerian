@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #080808;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button {
+  font-family: 'Space Mono', monospace;
+}
